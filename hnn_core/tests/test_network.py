@@ -122,6 +122,14 @@ def test_spikes(tmpdir):
 
     assert ("Spikes | 2 simulation trials" in repr(spikes))
 
+    # Test recovery of empty spike files
+    empty_spike = Spikes(spike_times=[[], []], spike_gids=[[], []], 
+                         spike_types=[[], []])
+    empty_spike.write(tmpdir.join('empty_spk_%d.txt'))
+    assert empty_spike == read_spikes(tmpdir.join('empty_spk_*.txt'))
+
+    assert ("Spikes | 2 simulation trials" in repr(empty_spike))
+
     with pytest.raises(TypeError,
                        match="spike_times should be a list of lists"):
         spikes = Spikes(spike_times=([2.3456, 7.89], [4.2812, 93.2]),
@@ -207,6 +215,7 @@ def test_spikes(tmpdir):
 
     # Write spike file with no 'types' column
     # Check for gid_ranges errors
+
     for fname in sorted(glob(str(tmpdir.join('spk_*.txt')))):
         times_gids_only = np.loadtxt(fname, dtype=str)[:, (0, 1)]
         np.savetxt(fname, times_gids_only, delimiter='\t', fmt='%s')

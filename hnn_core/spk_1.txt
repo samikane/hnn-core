@@ -1,0 +1,4 @@
+1   270 evprox1
+2   270 evprox1
+3   900 evdist1
+4   800 evdist1

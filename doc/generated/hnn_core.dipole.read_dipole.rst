@@ -1,0 +1,6 @@
+hnn\_core.dipole.read\_dipole
+=============================
+
+.. currentmodule:: hnn_core.dipole
+
+.. autofunction:: read_dipole

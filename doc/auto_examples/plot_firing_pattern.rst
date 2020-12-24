@@ -1,0 +1,245 @@
+.. only:: html
+
+    .. note::
+        :class: sphx-glr-download-link-note
+
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_firing_pattern.py>`     to download the full example code or to run this example in your browser via Binder
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_firing_pattern.py:
+
+
+===================
+Plot firing pattern
+===================
+
+This example demonstrates how to inspect the firing
+pattern of cells in the HNN model.
+
+
+.. code-block:: default
+
+
+    # Authors: Mainak Jas <mjas@harvard.mgh.edu>
+
+    import os.path as op
+
+
+
+
+
+
+
+
+Let us import hnn_core
+
+
+.. code-block:: default
+
+
+    import hnn_core
+    from hnn_core import read_params, Network
+    from hnn_core.network_builder import NetworkBuilder
+
+    hnn_core_root = op.dirname(hnn_core.__file__)
+
+
+
+
+
+
+
+
+Then we read the parameters file
+
+
+.. code-block:: default
+
+    params_fname = op.join(hnn_core_root, 'param', 'default.json')
+    params = read_params(params_fname)
+
+
+
+
+
+
+
+
+Now let's build the network
+
+
+.. code-block:: default
+
+    import matplotlib.pyplot as plt
+
+    net = Network(params)
+    with NetworkBuilder(net) as network_builder:
+        network_builder.cells[0].plot_voltage()
+
+        # The cells are stored in the network object as a list
+        cells = network_builder.cells
+        print(cells[:5])
+
+        # We have different kinds of cells with different cell IDs (gids)
+        gids = [0, 35, 135, 170]
+        for gid in gids:
+            print(cells[gid].name)
+
+        # We can plot the firing pattern of individual cells
+        network_builder.cells[0].plot_voltage()
+        plt.title('%s (gid=%d)' % (cells[0].name, gid))
+
+
+
+
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_firing_pattern_001.png
+          :alt: plot firing pattern
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_firing_pattern_002.png
+          :alt: L2Basket (gid=170)
+          :class: sphx-glr-multi-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Loading custom mechanism files from /Users/samikakanekar/hnn-core/hnn_core/mod/x86_64/.libs/libnrnmech.so
+    Building the NEURON model
+    [Done]
+    Simulating soma voltage
+    Simulation time: 0.2 ms...
+    Simulation time: 10.0 ms...
+    Simulation time: 20.0 ms...
+    Simulation time: 30.0 ms...
+    Simulation time: 40.0 ms...
+    Simulation time: 50.0 ms...
+    Simulation time: 60.0 ms...
+    Simulation time: 70.0 ms...
+    Simulation time: 80.0 ms...
+    Simulation time: 90.0 ms...
+    [Done]
+    [<L2Basket | soma: L 39.000000, diam 20.000000, Ra 200.000000, cm 0.850000>, <L2Basket | soma: L 39.000000, diam 20.000000, Ra 200.000000, cm 0.850000>, <L2Basket | soma: L 39.000000, diam 20.000000, Ra 200.000000, cm 0.850000>, <L2Basket | soma: L 39.000000, diam 20.000000, Ra 200.000000, cm 0.850000>, <L2Basket | soma: L 39.000000, diam 20.000000, Ra 200.000000, cm 0.850000>]
+    L2Basket
+    L2Pyr
+    L5Basket
+    L5Pyr
+    Simulating soma voltage
+    Simulation time: 0.2 ms...
+    Simulation time: 10.0 ms...
+    Simulation time: 20.0 ms...
+    Simulation time: 30.0 ms...
+    Simulation time: 40.0 ms...
+    Simulation time: 50.0 ms...
+    Simulation time: 60.0 ms...
+    Simulation time: 70.0 ms...
+    Simulation time: 80.0 ms...
+    Simulation time: 90.0 ms...
+    [Done]
+
+
+
+
+Let's do this for the rest of the cell types with a new NetworkBuilder object
+
+
+.. code-block:: default
+
+    with NetworkBuilder(net) as network_builder:
+        fig, axes = plt.subplots(1, 2, sharey=True, figsize=(8, 4))
+        for gid, ax in zip([35, 170], axes):
+            network_builder.cells[gid].plot_voltage(ax)
+            ax.set_title('%s (gid=%d)' % (cells[gid].name, gid))
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_firing_pattern_003.png
+    :alt: L2Pyr (gid=35), L5Pyr (gid=170)
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Building the NEURON model
+    [Done]
+    Simulating soma voltage
+    Simulation time: 0.2 ms...
+    Simulation time: 10.0 ms...
+    Simulation time: 20.0 ms...
+    Simulation time: 30.0 ms...
+    Simulation time: 40.0 ms...
+    Simulation time: 50.0 ms...
+    Simulation time: 60.0 ms...
+    Simulation time: 70.0 ms...
+    Simulation time: 80.0 ms...
+    Simulation time: 90.0 ms...
+    [Done]
+    Simulating soma voltage
+    Simulation time: 0.2 ms...
+    Simulation time: 10.0 ms...
+    Simulation time: 20.0 ms...
+    Simulation time: 30.0 ms...
+    Simulation time: 40.0 ms...
+    Simulation time: 50.0 ms...
+    Simulation time: 60.0 ms...
+    Simulation time: 70.0 ms...
+    Simulation time: 80.0 ms...
+    Simulation time: 90.0 ms...
+    [Done]
+
+
+
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 1 minutes  6.878 seconds)
+
+
+.. _sphx_glr_download_auto_examples_plot_firing_pattern.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+  .. container:: binder-badge
+
+    .. image:: images/binder_badge_logo.svg
+      :target: https://mybinder.org/v2/gh/jonescompneurolab/hnn-core/gh-pages?filepath=stable/notebooks/auto_examples/plot_firing_pattern.ipynb
+      :alt: Launch binder
+      :width: 150 px
+
+
+  .. container:: sphx-glr-download sphx-glr-download-python
+
+     :download:`Download Python source code: plot_firing_pattern.py <plot_firing_pattern.py>`
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+     :download:`Download Jupyter notebook: plot_firing_pattern.ipynb <plot_firing_pattern.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

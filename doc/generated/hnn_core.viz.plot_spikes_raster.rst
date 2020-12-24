@@ -1,0 +1,6 @@
+hnn\_core.viz.plot\_spikes\_raster
+==================================
+
+.. currentmodule:: hnn_core.viz
+
+.. autofunction:: plot_spikes_raster

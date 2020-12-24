@@ -1,0 +1,6 @@
+hnn\_core.viz.plot\_cells
+=========================
+
+.. currentmodule:: hnn_core.viz
+
+.. autofunction:: plot_cells
